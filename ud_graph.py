@@ -72,13 +72,32 @@ class UndirectedGraph:
         """
         Remove edge from the graph
         """
-        
+        if u not in self.adj_list:  # if u is not a vertex then no edge can exist
+            return
+        if v not in self.adj_list:  # if v is not a vertex then no edge can exist
+            return
+        if u not in self.adj_list[v] and v not in self.adj_list[u]:  # if an edge does not exist
+            return
+        if self.adj_list[v] is self.adj_list[u]:
+            return
+        else:
+            self.adj_list[u].remove(v)
+            self.adj_list[v].remove(u)
 
     def remove_vertex(self, v: str) -> None:
         """
         Remove vertex and all connected edges
         """
-        
+        if v not in self.adj_list:
+            return
+        temp_list = []
+        for key in self.adj_list.keys():  # iterate through the dictionary and store keys as lists
+            temp_list.append(key)
+        for x in range(len(self.adj_list)):  # iterate through and remove all edges from v to other vertices
+            self.remove_edge(temp_list[x], v)
+        self.adj_list.pop(v, None)  # remove v
+
+
 
     def get_vertices(self) -> []:
         """
