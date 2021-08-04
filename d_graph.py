@@ -1,7 +1,10 @@
 # Course: CS261 - Data Structures
-# Author:
-# Assignment:
+# Author: Kyle Brogdon
+# Assignment: Assignment 6 Directed Graphs
 # Description:
+
+import heapq
+from collections import deque
 
 class DirectedGraph:
     """

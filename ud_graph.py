@@ -1,8 +1,10 @@
-# Course: 
-# Author: 
-# Assignment: 
+# Course: CS261 - Data Structures
+# Author: Kyle Brogdon
+# Assignment: Assignment 6 undirected Graphs
 # Description:
 
+import heapq
+from collections import deque
 
 class UndirectedGraph:
     """
@@ -44,11 +46,26 @@ class UndirectedGraph:
         """
         Add new vertex to the graph
         """
-        
+        if v in self.adj_list:
+            return
+        else:
+            self.adj_list[v] = []
+
     def add_edge(self, u: str, v: str) -> None:
         """
         Add edge to the graph
         """
+        if u not in self.adj_list:  # check if the key u exists, if not, create it
+            self.add_vertex(u)
+        if v not in self.adj_list:  # check if the key v exists, if not, create it
+            self.add_vertex(v)
+        if self.adj_list[u] is self.adj_list[v]:  # if both keys are the same, return
+            return
+        if v in self.adj_list[u] and u in self.adj_list[v]:  # if an edge already exists, return
+            return
+        else:  # otherwise, create an edge between the vertices
+            self.adj_list[u].append(v)
+            self.adj_list[v].append(u)
         
 
     def remove_edge(self, v: str, u: str) -> None:
