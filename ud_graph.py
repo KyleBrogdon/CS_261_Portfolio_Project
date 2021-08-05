@@ -128,6 +128,22 @@ class UndirectedGraph:
         """
         Return true if provided path is valid, False otherwise
         """
+        stack = deque()
+        for x in range(len(path)-1, -1, -1):
+            stack.append(path[x])
+        if len(stack) == 1:
+            temp = stack.pop()
+            if temp not in self.adj_list:
+                return False
+        while len(stack) > 1:
+            reachable = set()
+            temp = stack.pop()
+            for i in range (len(self.adj_list[temp])):
+                reachable.add(self.adj_list[temp][i])
+            if stack[len(stack) - 1] not in reachable:  # if the next vertex is not reachable
+                return False
+        return True
+
        
 
     def dfs(self, v_start, v_end=None) -> []:
