@@ -103,12 +103,25 @@ class UndirectedGraph:
         """
         Return list of vertices in the graph (any order)
         """
-       
+        temp_list = []
+        for key in self.adj_list.keys():  # iterate through the dictionary and store keys as lists
+            temp_list.append(key)
+        return temp_list
 
     def get_edges(self) -> []:
         """
         Return list of edges in the graph (any order)
         """
+        temp_list = []
+        edge_list = []
+        for key, value in self.adj_list.items():  # iterate through the dictionary and store keys as lists
+            for x in range (len(self.adj_list[key])):
+                temp = [key, self.adj_list[key][x]]
+                if temp not in temp_list and temp.reverse() not in temp_list:
+                    temp_list.append(temp)
+        for x in range(len(temp_list)):
+            edge_list.append(tuple(temp_list[x]))
+        return edge_list
         
 
     def is_valid_path(self, path: []) -> bool:
