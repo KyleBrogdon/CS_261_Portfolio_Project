@@ -55,12 +55,12 @@ class UndirectedGraph:
         """
         Add edge to the graph
         """
+        if u == v:  # if the vertices are the same
+            return
         if u not in self.adj_list:  # check if the key u exists, if not, create it
             self.add_vertex(u)
         if v not in self.adj_list:  # check if the key v exists, if not, create it
             self.add_vertex(v)
-        if self.adj_list[u] is self.adj_list[v]:  # if both keys are the same, return
-            return
         if v in self.adj_list[u] and u in self.adj_list[v]:  # if an edge already exists, return
             return
         else:  # otherwise, create an edge between the vertices
@@ -174,6 +174,7 @@ if __name__ == '__main__':
     print(g)
     g.remove_vertex('D')
     print(g)
+    test = UndirectedGraph
 
 
     print("\nPDF - method get_vertices() / get_edges() example 1")
