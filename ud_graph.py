@@ -151,7 +151,28 @@ class UndirectedGraph:
         Return list of vertices visited during DFS search
         Vertices are picked in alphabetical order
         """
-       
+        if v_start not in self.adj_list:
+            return []
+        if v_end is not None and v_end not in self.adj_list:
+            v_end = None
+        visited_vertices = []
+        stack = deque(v_start)
+        while len(stack) > 0:
+            temp = stack.pop()
+            temp_list = []  # used to add vertices in reverse lexicographocal order
+            if temp not in visited_vertices:
+                visited_vertices.append(temp)
+            if temp == v_end:
+                break
+            for x in range(len(self.adj_list[temp])):  # iterate through reachable vertices
+                temp_list.append(self.adj_list[temp][x])
+                temp_list.sort(reverse=True)  # creates a descending order list of reachable vertices
+            for x in range(len(temp_list)):
+                if temp_list[x] not in visited_vertices:
+                    stack.append(temp_list[x])  # append vertcies to stack so they are visited in ascending lexicographical order
+        return visited_vertices
+
+
 
     def bfs(self, v_start, v_end=None) -> []:
         """
