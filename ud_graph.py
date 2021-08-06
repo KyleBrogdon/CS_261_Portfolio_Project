@@ -179,7 +179,26 @@ class UndirectedGraph:
         Return list of vertices visited during BFS search
         Vertices are picked in alphabetical order
         """
-        
+        if v_start not in self.adj_list:
+            return []
+        if v_end is not None and v_end not in self.adj_list:
+            v_end = None
+        visited_vertices = []
+        queue = deque(v_start)
+        while len(queue) > 0:
+            temp = queue.pop()
+            temp_list = []  # used to add vertices in reverse lexicographocal order
+            visited_vertices.append(temp)
+            if temp == v_end:
+                break
+            for x in range(len(self.adj_list[temp])):  # iterate through reachable vertices
+                if self.adj_list[temp][x] not in visited_vertices:
+                    temp_list.append(self.adj_list[temp][x])
+                temp_list.sort(reverse=True)  # creates a descending order list of reachable vertices
+            for x in range(len(temp_list)):
+                if temp_list[x] not in visited_vertices:
+                    queue.append(temp_list[x])  # append vertcies to stack so they are visited in ascending lexicographical order
+        return visited_vertices
 
     def count_connected_components(self):
         """
