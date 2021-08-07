@@ -219,7 +219,9 @@ class DirectedGraph:
                     for i in range(len(self.adj_matrix[temp_list[x]])):
                         if self.adj_matrix[temp_list[x]][i] > 0:  # if the reachable vertex can go somewhere else
                             if i in visited_vertices:  # if that somewhere else has been visited before, it's a cycle
-                                return True
+                                for y in range(len(self.adj_matrix[i])):
+                                    if self.adj_matrix[i][y] > 0 and y in visited_vertices:
+                                        return True
         return False  # cycle does not exist from v
 
     def dijkstra(self, src: int) -> []:
