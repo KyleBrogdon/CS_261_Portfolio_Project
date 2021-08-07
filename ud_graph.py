@@ -206,7 +206,15 @@ class UndirectedGraph:
         """
         Return number of connected componets in the graph
         """
-      
+        unvisited_vertices = self.get_vertices()
+        connected_components = 0
+        while len(unvisited_vertices) > 0:
+            visited_vertices = self.dfs(unvisited_vertices[0])
+            for x in range(len(visited_vertices)):
+                unvisited_vertices.remove(visited_vertices[x])
+            connected_components += 1
+        return connected_components
+
 
     def has_cycle(self):
         """
