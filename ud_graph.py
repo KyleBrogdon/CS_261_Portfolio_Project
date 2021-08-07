@@ -195,8 +195,8 @@ class UndirectedGraph:
                 if self.adj_list[temp][x] not in visited_vertices:
                     temp_list.append(self.adj_list[temp][x])
                 temp_list.sort(reverse=True)  # creates a descending order list of reachable vertices
-            for x in range(len(temp_list)):
-                if temp_list[x] not in visited_vertices:
+            if len(queue) == 0:
+                for x in range(len(temp_list)):
                     queue.append(temp_list[x])  # append vertcies to stack so they are visited in ascending lexicographical order
         return visited_vertices
 
