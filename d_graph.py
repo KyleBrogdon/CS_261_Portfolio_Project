@@ -184,9 +184,9 @@ class DirectedGraph:
         """
         unsearched_vertices = self.get_vertices()  # creates a list of all vertices
         parent = dict()
-        for i in range(len(unsearched_vertices)):  # creates a dictionary to store the parent values of vertices
-            parent[unsearched_vertices[i]] = None
         while len(unsearched_vertices) > 0:  # perform a DFS on each vertex using helper method
+            for i in range(len(unsearched_vertices)):  # creates a dictionary to store the parent values of vertices
+                parent[unsearched_vertices[i]] = None
             has_cycle = self.has_cycle_helper(unsearched_vertices[0], parent)  # store the true or false value
             if has_cycle is True:  # if a cycle exists, break
                 return True
@@ -214,9 +214,12 @@ class DirectedGraph:
                     # append vertices to stack so they are visited in ascending lexicographical order
                     stack.append(temp_list[x])
                     parent[temp_list[x]] = temp  # update parent values for the vertices we just added
-                    # if a vertex was visited and it's not the parent vertex, then a cycle must exist, return True
+                # if reachable vertex has been reached before and it is not the parent vertex
                 if temp_list[x] in visited_vertices and temp_list[x] != parent[temp]:
-                    return True
+                    for i in range(len(self.adj_matrix[temp_list[x]])):
+                        if self.adj_matrix[temp_list[x]][i] > 0:  # if the reachable vertex can go somewhere else
+                            if i in visited_vertices:  # if that somewhere else has been visited before, it's a cycle
+                                return True
         return False  # cycle does not exist from v
 
     def dijkstra(self, src: int) -> []:
@@ -285,7 +288,7 @@ if __name__ == '__main__':
 
     edges_to_add = [(4, 3), (2, 3), (1, 3), (4, 0, 99)]
     for src, dst, *weight in edges_to_add:
-        g.add_edge(src, dst)
+        g.add_edge(src, dst, *weight)
         print(g.get_edges(), g.has_cycle(), sep='\n')
     print('\n', g)
 
