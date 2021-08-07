@@ -103,19 +103,20 @@ class DirectedGraph:
 
     def get_edges(self) -> []:
         """
-
+        Returns the edges in the graph as a tuple containing the incident vertices and the edge weight
         """
         edges = []
         for x in range(len(self.adj_matrix)):
             for y in range(len(self.adj_matrix[x])):
-                if self.adj_matrix[x][y] > 0:
-                    temp = (x, y, self.adj_matrix[x][y])
-                    edges.append(temp)
+                if self.adj_matrix[x][y] > 0:  # if an edge exists
+                    temp = (x, y, self.adj_matrix[x][y])  # store it as a tuple
+                    edges.append(temp)  # append the tuple to the list
         return edges
 
     def is_valid_path(self, path: []) -> bool:
         """
-        TODO: Write this implementation
+        Takes a list containing a path, then traverses that path. If able to traverse the whole path, it is valid and
+        this method returns True. Otherwise, it returns false
         """
         if path == []:
             return True
@@ -128,13 +129,54 @@ class DirectedGraph:
         """
         TODO: Write this implementation
         """
-        pass
+        if v_start not in self.get_vertices():
+            return []
+        if v_end is not None and v_end not in self.get_vertices():
+            v_end = None
+        visited_vertices = []
+        stack = deque([v_start])
+        while len(stack) > 0:
+            temp = stack.pop()
+            temp_list = []  # used to add vertices to the visited vertices list
+            if temp not in visited_vertices:
+                visited_vertices.append(temp)
+            if temp == v_end:
+                break
+            for x in range(len(self.adj_matrix[temp])):  # iterate through reachable vertices
+                if self.adj_matrix[temp][x] > 0:
+                    temp_list.append(x)
+                temp_list.sort(reverse=True)  # creates a descending order list of reachable vertices
+            for x in range(len(temp_list)):
+                if temp_list[x] not in visited_vertices:
+                    stack.append(temp_list[x])  # append vertcies to stack so they are visited in ascending order
+        return visited_vertices
 
     def bfs(self, v_start, v_end=None) -> []:
         """
         TODO: Write this implementation
         """
-        pass
+        if v_start not in self.get_vertices():
+            return []
+        if v_end is not None and v_end not in self.get_vertices():
+            v_end = None
+        visited_vertices = []
+        queue = deque([v_start])
+        while len(queue) > 0:
+            temp = queue.pop()
+            temp_list = []  # used to add vertices in lexicographocal order
+            visited_vertices.append(temp)
+            if temp == v_end:
+                break
+            for x in range(len(self.adj_matrix[temp])):  # iterate through reachable vertices
+                if self.adj_matrix[temp][x] not in visited_vertices and self.adj_matrix[temp][x] > 0:
+                    temp_list.append(x)
+            temp_list.sort()  # creates a ascending list of reachable vertices
+            for x in range(len(temp_list)):
+                # if not visited yet and not already in queue for bfs
+                if temp_list[x] not in visited_vertices and temp_list[x] not in queue:
+                    # append vertcies to stack so they are visited in ascending lexicographical order
+                    queue.appendleft(temp_list[x])
+        return visited_vertices
 
     def has_cycle(self):
         """
