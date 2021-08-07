@@ -168,7 +168,7 @@ class DirectedGraph:
             if temp == v_end:
                 break
             for x in range(len(self.adj_matrix[temp])):  # iterate through reachable vertices
-                if self.adj_matrix[temp][x] not in visited_vertices and self.adj_matrix[temp][x] > 0:
+                if self.adj_matrix[temp] not in visited_vertices and self.adj_matrix[temp][x] > 0:
                     temp_list.append(x)
             temp_list.sort()  # creates a ascending list of reachable vertices
             for x in range(len(temp_list)):
