@@ -220,7 +220,42 @@ class UndirectedGraph:
         """
         Return True if graph contains a cycle, False otherwise
         """
-       
+        unsearched_vertices = self.get_vertices()  # creates a list of all vertices
+        parent = dict()
+        for i in range(len(unsearched_vertices)):  # creates a dictionary to store the parent values of vertices
+            parent[unsearched_vertices[i]] = None
+        while len(unsearched_vertices) > 0:  # perform a DFS on each vertex using helper method
+            has_cycle = self.has_cycle_helper(unsearched_vertices[0], parent)  # store the true or false value
+            if has_cycle is True:  # if a cycle exists, break
+                return True
+            unsearched_vertices.remove(unsearched_vertices[0])  # if a cycle doesn't exist, remove vertex and continue
+        return False  # no cycles exist
+
+
+    def has_cycle_helper(self, v, parent):
+        """
+        Helper method that takes a vertex, and the list of parent vertices, does a DFS starting from v and returns true
+        if a cycle exists from v
+        """
+        visited_vertices = []
+        stack = deque(v)
+        while len(stack) > 0:
+            temp = stack.pop()
+            temp_list = []  # used to add vertices in reverse lexicographocal order
+            if temp not in visited_vertices:
+                visited_vertices.append(temp)
+            for x in range(len(self.adj_list[temp])):  # iterate through reachable vertices
+                temp_list.append(self.adj_list[temp][x])
+                temp_list.sort(reverse=True)  # creates a descending order list of reachable vertices
+            for x in range(len(temp_list)):
+                if temp_list[x] not in visited_vertices and temp_list[x] not in stack:
+                    # append vertices to stack so they are visited in ascending lexicographical order
+                    stack.append(temp_list[x])
+                    parent[temp_list[x]] = temp  # update parent values for the vertices we just added
+                    # if a vertex was visited and it's not the parent vertex, then a cycle must exist, return True
+                if temp_list[x] in visited_vertices and temp_list[x] != parent[temp]:
+                    return True
+        return False  # cycle does not exist from v
 
    
 
