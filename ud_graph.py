@@ -6,6 +6,7 @@
 import heapq
 from collections import deque
 
+
 class UndirectedGraph:
     """
     Class to implement undirected graph
@@ -66,7 +67,6 @@ class UndirectedGraph:
         else:  # otherwise, create an edge between the vertices
             self.adj_list[u].append(v)
             self.adj_list[v].append(u)
-        
 
     def remove_edge(self, v: str, u: str) -> None:
         """
@@ -97,8 +97,6 @@ class UndirectedGraph:
             self.remove_edge(temp_list[x], v)
         self.adj_list.pop(v, None)  # remove v
 
-
-
     def get_vertices(self) -> []:
         """
         Return list of vertices in the graph (any order)
@@ -115,21 +113,20 @@ class UndirectedGraph:
         temp_list = []
         edge_list = []
         for key, value in self.adj_list.items():  # iterate through the dictionary and store keys as lists
-            for x in range (len(self.adj_list[key])):
+            for x in range(len(self.adj_list[key])):
                 temp = [key, self.adj_list[key][x]]
                 if temp not in temp_list and temp.reverse() not in temp_list:
                     temp_list.append(temp)
         for x in range(len(temp_list)):
             edge_list.append(tuple(temp_list[x]))
         return edge_list
-        
 
     def is_valid_path(self, path: []) -> bool:
         """
         Return true if provided path is valid, False otherwise
         """
         stack = deque()
-        for x in range(len(path)-1, -1, -1):
+        for x in range(len(path) - 1, -1, -1):
             stack.append(path[x])
         if len(stack) == 1:
             temp = stack.pop()
@@ -138,13 +135,11 @@ class UndirectedGraph:
         while len(stack) > 1:
             reachable = set()
             temp = stack.pop()
-            for i in range (len(self.adj_list[temp])):
+            for i in range(len(self.adj_list[temp])):
                 reachable.add(self.adj_list[temp][i])
             if stack[len(stack) - 1] not in reachable:  # if the next vertex is not reachable
                 return False
         return True
-
-       
 
     def dfs(self, v_start, v_end=None) -> []:
         """
@@ -169,10 +164,9 @@ class UndirectedGraph:
                 temp_list.sort(reverse=True)  # creates a descending order list of reachable vertices
             for x in range(len(temp_list)):
                 if temp_list[x] not in visited_vertices:
-                    stack.append(temp_list[x])  # append vertcies to stack so they are visited in ascending lexicographical order
+                    stack.append(
+                        temp_list[x])  # append vertcies to stack so they are visited in ascending lexicographical order
         return visited_vertices
-
-
 
     def bfs(self, v_start, v_end=None) -> []:
         """
@@ -197,22 +191,19 @@ class UndirectedGraph:
                 temp_list.sort(reverse=True)  # creates a descending order list of reachable vertices
             for x in range(len(temp_list)):
                 if temp_list[x] not in visited_vertices:
-                    queue.append(temp_list[x])  # append vertcies to stack so they are visited in ascending lexicographical order
+                    queue.append(
+                        temp_list[x])  # append vertcies to stack so they are visited in ascending lexicographical order
         return visited_vertices
 
     def count_connected_components(self):
         """
         Return number of connected componets in the graph
         """
-      
 
     def has_cycle(self):
         """
         Return True if graph contains a cycle, False otherwise
         """
-       
-
-   
 
 
 if __name__ == '__main__':
@@ -233,7 +224,6 @@ if __name__ == '__main__':
         g.add_edge(u, v)
     print(g)
 
-
     print("\nPDF - method remove_edge() / remove_vertex example 1")
     print("----------------------------------------------------")
     g = UndirectedGraph(['AB', 'AC', 'BC', 'BD', 'CD', 'CE', 'DE'])
@@ -245,7 +235,6 @@ if __name__ == '__main__':
     print(g)
     test = UndirectedGraph
 
-
     print("\nPDF - method get_vertices() / get_edges() example 1")
     print("---------------------------------------------------")
     g = UndirectedGraph()
@@ -253,14 +242,12 @@ if __name__ == '__main__':
     g = UndirectedGraph(['AB', 'AC', 'BC', 'BD', 'CD', 'CE'])
     print(g.get_edges(), g.get_vertices(), sep='\n')
 
-
     print("\nPDF - method is_valid_path() example 1")
     print("--------------------------------------")
     g = UndirectedGraph(['AB', 'AC', 'BC', 'BD', 'CD', 'CE', 'DE'])
     test_cases = ['ABC', 'ADE', 'ECABDCBE', 'ACDECB', '', 'D', 'Z']
     for path in test_cases:
         print(list(path), g.is_valid_path(list(path)))
-
 
     print("\nPDF - method dfs() and bfs() example 1")
     print("--------------------------------------")
@@ -273,7 +260,6 @@ if __name__ == '__main__':
     for i in range(1, len(test_cases)):
         v1, v2 = test_cases[i], test_cases[-1 - i]
         print(f'{v1}-{v2} DFS:{g.dfs(v1, v2)} BFS:{g.bfs(v1, v2)}')
-
 
     print("\nPDF - method count_connected_components() example 1")
     print("---------------------------------------------------")
@@ -290,7 +276,6 @@ if __name__ == '__main__':
         g.add_edge(u, v) if command == 'add' else g.remove_edge(u, v)
         print(g.count_connected_components(), end=' ')
     print()
-
 
     print("\nPDF - method has_cycle() example 1")
     print("----------------------------------")
