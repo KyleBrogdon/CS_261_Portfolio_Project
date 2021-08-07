@@ -187,17 +187,19 @@ class UndirectedGraph:
         queue = deque(v_start)
         while len(queue) > 0:
             temp = queue.pop()
-            temp_list = []  # used to add vertices in reverse lexicographocal order
+            temp_list = []  # used to add vertices in lexicographocal order
             visited_vertices.append(temp)
             if temp == v_end:
                 break
             for x in range(len(self.adj_list[temp])):  # iterate through reachable vertices
                 if self.adj_list[temp][x] not in visited_vertices:
                     temp_list.append(self.adj_list[temp][x])
-                temp_list.sort(reverse=True)  # creates a descending order list of reachable vertices
-            if len(queue) == 0:
-                for x in range(len(temp_list)):
-                    queue.append(temp_list[x])  # append vertcies to stack so they are visited in ascending lexicographical order
+            temp_list.sort()  # creates a ascending list of reachable vertices
+            for x in range(len(temp_list)):
+                # if not visited yet and not already in queue for bfs
+                if temp_list[x] not in visited_vertices and temp_list[x] not in queue:
+                    # append vertcies to stack so they are visited in ascending lexicographical order
+                    queue.appendleft(temp_list[x])
         return visited_vertices
 
     def count_connected_components(self):
