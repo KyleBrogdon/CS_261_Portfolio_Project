@@ -55,33 +55,63 @@ class DirectedGraph:
 
     def add_vertex(self) -> int:
         """
-        TODO: Write this implementation
+        Adds a new vertex to the graph and then returns the number of vertices in the graph after the new addition
         """
-        pass
+        self.adj_matrix.append([])  # adds an empty list to the end of the matrix
+        self.v_count += 1  # increment count
+        for i in range(self.v_count):  # appends 0s to make the new vertex the appropriate length
+            self.adj_matrix[self.v_count - 1].append(0)
+        for i in range(self.v_count-1):  # adds a new index to all existing vertices
+            self.adj_matrix[i].append(0)
+        return self.v_count
 
-    def add_edge(self, src: int, dst: int, weight=1) -> None:
+    def add_edge(self, src: int, dst: int, weight=0) -> None:
         """
-        TODO: Write this implementation
+        Takes a src index (source), dst index (destination), and adds a positive integer weight to the graph.  If either
+        index is out of range, or if src and dst are the same index, then the method performs no action.  If the edge
+        already exists, then the weight is updated.
         """
-        pass
+        if src == dst:
+            return
+        if src < 0 or src > self.v_count-1:
+            return
+        if dst < 0 or dst > self.v_count-1:
+            return
+        self.adj_matrix[src][dst] = weight
 
     def remove_edge(self, src: int, dst: int) -> None:
         """
-        TODO: Write this implementation
+        Takes a src index (source), dst index (destination), and removes their edge from the graph.  If either
+        index is out of range, or if there is no edge between the vertices, then this method does nothing.
         """
-        pass
+        if src == dst:
+            return
+        if src < 0 or src > self.v_count-1:
+            return
+        if dst < 0 or dst > self.v_count-1:
+            return
+        self.adj_matrix[src][dst] = 0
 
     def get_vertices(self) -> []:
         """
-        TODO: Write this implementation
+        Returns a list containing the vertices of the graph
         """
-        pass
+        vertices = []
+        for x in range(len(self.adj_matrix)):
+            vertices.append(x)
+        return vertices
 
     def get_edges(self) -> []:
         """
-        TODO: Write this implementation
+
         """
-        pass
+        edges = []
+        for x in range(len(self.adj_matrix)):
+            for y in range(len(self.adj_matrix[x])):
+                if self.adj_matrix[x][y] > 0:
+                    temp = (x, y, self.adj_matrix[x][y])
+                    edges.append(temp)
+        return edges
 
     def is_valid_path(self, path: []) -> bool:
         """
