@@ -117,7 +117,12 @@ class DirectedGraph:
         """
         TODO: Write this implementation
         """
-        pass
+        if path == []:
+            return True
+        for x in range(len(path)-1):
+            if self.adj_matrix[path[x]][path[x+1]] == 0:
+                return False
+        return True
 
     def dfs(self, v_start, v_end=None) -> []:
         """
