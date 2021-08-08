@@ -224,8 +224,7 @@ class DirectedGraph:
                         return True
                     if temp_list[x] != parent[temp]:
                         for i in range(len(self.adj_matrix[temp_list[x]])):
-                            if self.adj_matrix[temp_list[x]][i] > 0:  # if the reachable vertex can go somewhere else
-                                if i in visited_vertices:  # if that somewhere else has been visited before
+                            if self.adj_matrix[temp_list[x]][temp] > 0:  # if the reachable vertex can go somewhere else
                                     return True
         return False  # cycle does not exist from v
 
@@ -241,27 +240,28 @@ class DirectedGraph:
             d, v = heapq.heappop(priority_queue)  # unpack the tuple into each variable
             if len(visited_dict) == 0:  # if this is the first vertex being visited
                 visited_dict[v] = d  # set dictionary key/value pair
-                for x in range(len(self.adj_matrix[v])):  # iterate through and append edges as new tuple, track parent
+                for x in range(len(self.adj_matrix[v])):  # iterate through and append edges as new tuple
                     if self.adj_matrix[v][x] > 0:
                         d = self.adj_matrix[v][x]
                         priority_queue.append((d, x))
                 heapq.heapify(priority_queue)  # heapify to prioritize the shortest distance first
             elif v not in visited_dict:  # only execute if unvisted vertex
                 visited_dict[v] = d
-                for x in range(len(self.adj_matrix[v])):  # iterate through and append edges as new tuple, track parent
+                for x in range(len(self.adj_matrix[v])):  # iterate through and append edges as new tuple
                     if self.adj_matrix[v][x] > 0:
                         d = self.adj_matrix[v][x]
-                        priority_queue.append((d + visited_dict[v], x))  # make sure distance
-                heapq.heapify(priority_queue)
+                        # add previous distance to tuple distance to account for travel from start vertex
+                        priority_queue.append((d + visited_dict[v], x))
+                heapq.heapify(priority_queue) # heapify to prioritize the shortest distance first
         for x in range (len(self.adj_matrix)):
-            if x not in visited_dict:
-                visited_dict[x] = float('inf')
+            if x not in visited_dict:  # if a vertex was not visited, it is unreachable from src
+                visited_dict[x] = float('inf')  # set value as INFINITY
         return_list = []
         for x in range (len(self.adj_matrix)):
-            return_list.append(0)
+            return_list.append(0) # create a list of 0s
         for key, value in visited_dict.items():
-            return_list[key] = value
-        return return_list
+            return_list[key] = value  # set value of each index to key value from dict
+        return return_list  # return list
 
 
 if __name__ == '__main__':
@@ -312,11 +312,13 @@ if __name__ == '__main__':
 
     print("\nPDF - method has_cycle() example 1")
     print("----------------------------------")
-    edges = [(0, 1, 10), (4, 0, 12), (1, 4, 15), (4, 3, 3),
-             (3, 1, 5), (2, 1, 23), (3, 2, 7)]
+    edges = [(0, 2, 6), (0, 11, 11), (1, 2, 1), (4, 12, 11),
+             (5, 11, 3), (5, 12, 1), (6, 0, 17), (6, 4, 19), (6, 5, 7), (8, 6, 10),
+             (9, 5, 12), (10, 12, 18), (11, 7, 9)]
     g = DirectedGraph(edges)
+    print(g.get_edges(), g.has_cycle(), sep='\n')
 
-    edges_to_remove = [(3, 1), (4, 0), (3, 2)]
+    """edges_to_remove = [(3, 1), (4, 0), (3, 2)]
     for src, dst in edges_to_remove:
         g.remove_edge(src, dst)
         print(g.get_edges(), g.has_cycle(), sep='\n')
@@ -325,7 +327,7 @@ if __name__ == '__main__':
     for src, dst, *weight in edges_to_add:
         g.add_edge(src, dst, *weight)
         print(g.get_edges(), g.has_cycle(), sep='\n')
-    print('\n', g)
+    print('\n', g)"""
 
 
     print("\nPDF - dijkstra() example 1")
