@@ -187,17 +187,14 @@ class DirectedGraph:
         Searches the graph for a cycle, returns True if a cycle exists, and returns False if no cycle exists.
         """
         unsearched_vertices = self.get_vertices()  # creates a list of all vertices
-        parent = dict()
         while len(unsearched_vertices) > 0:  # perform a DFS on each vertex using helper method
-            for i in range(len(unsearched_vertices)):  # creates a dictionary to store the parent values of vertices
-                parent[unsearched_vertices[i]] = None
-            has_cycle = self.has_cycle_helper(unsearched_vertices[0], parent)  # store the true or false value
+            has_cycle = self.has_cycle_helper(unsearched_vertices[0])  # store the true or false value
             if has_cycle is True:  # if a cycle exists, break
                 return True
             unsearched_vertices.remove(unsearched_vertices[0])  # if a cycle doesn't exist, remove vertex and continue
         return False  # no cycles exist
 
-    def has_cycle_helper(self, v, parent):
+    def has_cycle_helper(self, v):
         """
         Helper method that takes a vertex, and the list of parent vertices, does a DFS starting from v and returns true
         if a cycle exists from v
