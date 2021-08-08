@@ -229,7 +229,41 @@ class DirectedGraph:
         """
         TODO: Write this implementation
         """
-        pass
+        visited_dict = dict()
+        priority_queue = [(src, 0, None)]
+        while len(priority_queue) > 0:
+            v, d, parent = heapq.heappop(priority_queue)
+            if len(visited_dict) == 0:
+                visited_dict[v] = d
+                for x in range(len(self.adj_matrix[v])):
+                    if self.adj_matrix[v][x] > 0:
+                        d = self.adj_matrix[v][x]
+                        priority_queue.append((x, d, v))
+                        heapq.heapify(priority_queue)
+            elif v not in visited_dict:
+                visited_dict[v] = d + visited_dict[parent]
+                for x in range(len(self.adj_matrix[v])):
+                    if self.adj_matrix[v][x] > 0:
+                        d = self.adj_matrix[v][x]
+                        priority_queue.append((x, d, v))
+                        heapq.heapify(priority_queue)
+            elif v in visited_dict and d + visited_dict[parent] < visited_dict[v]:
+                visited_dict[v] = d + visited_dict[parent]
+        for x in range (len(visited_dict)):
+            if visited_dict[x] == 0 and x != src:
+                visited_dict[x] = "inf"
+        return_list = []
+        for x in range(len(self.adj_matrix)):
+            return_list.append(0)
+        for key, value in visited_dict.items():
+            return_list[key] = value
+        return return_list
+
+
+
+        for x in range(len(self.adj_matrix)):
+            pass
+
 
 
 if __name__ == '__main__':
