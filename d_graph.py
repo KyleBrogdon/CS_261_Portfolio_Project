@@ -251,7 +251,7 @@ class DirectedGraph:
                 visited_dict[v] = d + visited_dict[parent]
         for x in range (len(self.adj_matrix)):
             if x not in visited_dict:
-                visited_dict[x] = "inf"
+                visited_dict[x] = float('inf')
         return_list = []
         for x in range (len(self.adj_matrix)):
             return_list.append(0)
