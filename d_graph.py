@@ -127,7 +127,9 @@ class DirectedGraph:
 
     def dfs(self, v_start, v_end=None) -> []:
         """
-        TODO: Write this implementation
+        Takes a starting vertex, an optional end vertex, and then conducts a depth first search of each vertex in
+        the graph, returning a list of the vertices visited. If the start vertex is not in the list, then an empty list
+        is returned, and if the end vertex does not exist then the end vertex is set to None.
         """
         if v_start not in self.get_vertices():
             return []
@@ -153,7 +155,9 @@ class DirectedGraph:
 
     def bfs(self, v_start, v_end=None) -> []:
         """
-        TODO: Write this implementation
+        Takes a starting vertex, an optional end vertex, and then conducts a breadth first search of each vertex in
+        the graph, returning a list of the vertices visited. If the start vertex is not in the list, then an empty list
+        is returned, and if the end vertex does not exist then the end vertex is set to None.
         """
         if v_start not in self.get_vertices():
             return []
@@ -163,7 +167,7 @@ class DirectedGraph:
         queue = deque([v_start])
         while len(queue) > 0:
             temp = queue.pop()
-            temp_list = []  # used to add vertices in lexicographocal order
+            temp_list = []  # used to add vertices in numerical order
             visited_vertices.append(temp)
             if temp == v_end:
                 break
@@ -180,7 +184,7 @@ class DirectedGraph:
 
     def has_cycle(self):
         """
-        TODO: Write this implementation
+        Searches the graph for a cycle, returns True if a cycle exists, and returns False if no cycle exists.
         """
         unsearched_vertices = self.get_vertices()  # creates a list of all vertices
         parent = dict()
@@ -202,7 +206,7 @@ class DirectedGraph:
         stack = deque([v])
         while len(stack) > 0:
             temp = stack.pop()
-            temp_list = []  # used to add vertices in reverse lexicographocal order
+            temp_list = []  # used to add vertices in reverse numerical order
             if temp not in visited_vertices:
                 visited_vertices.append(temp)
             for x in range(len(self.adj_matrix[temp])):  # iterate through reachable vertices
@@ -227,25 +231,27 @@ class DirectedGraph:
 
     def dijkstra(self, src: int) -> []:
         """
-        TODO: Write this implementation
+        Takes a starting vertex (src) and conducts a dijkstra's walk to find the shortest path from src to each vertex
+        in the graph, returns a list of the distances with each index being the respective index of the vertex in the
+        graph
         """
         visited_dict = dict()
-        priority_queue = [(0, src, None)]  # distance (priority), src, parent
-        while len(priority_queue) > 0:
-            d, v, parent = heapq.heappop(priority_queue)
-            if len(visited_dict) == 0:
-                visited_dict[v] = d
-                for x in range(len(self.adj_matrix[v])):
+        priority_queue = [(0, src)]  # distance (priority), src, parent
+        while len(priority_queue) > 0:  # loop through every edge in the graph
+            d, v = heapq.heappop(priority_queue)  # unpack the tuple into each variable
+            if len(visited_dict) == 0:  # if this is the first vertex being visited
+                visited_dict[v] = d  # set dictionary key/value pair
+                for x in range(len(self.adj_matrix[v])):  # iterate through and append edges as new tuple, track parent
                     if self.adj_matrix[v][x] > 0:
                         d = self.adj_matrix[v][x]
-                        priority_queue.append((d, x, v))
-                heapq.heapify(priority_queue)
-            elif v not in visited_dict:
+                        priority_queue.append((d, x))
+                heapq.heapify(priority_queue)  # heapify to prioritize the shortest distance first
+            elif v not in visited_dict:  # only execute if unvisted vertex
                 visited_dict[v] = d
-                for x in range(len(self.adj_matrix[v])):
+                for x in range(len(self.adj_matrix[v])):  # iterate through and append edges as new tuple, track parent
                     if self.adj_matrix[v][x] > 0:
                         d = self.adj_matrix[v][x]
-                        priority_queue.append((d + visited_dict[v], x, v))
+                        priority_queue.append((d + visited_dict[v], x))  # make sure distance
                 heapq.heapify(priority_queue)
         for x in range (len(self.adj_matrix)):
             if x not in visited_dict:
