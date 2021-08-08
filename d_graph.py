@@ -239,14 +239,14 @@ class DirectedGraph:
                     if self.adj_matrix[v][x] > 0:
                         d = self.adj_matrix[v][x]
                         priority_queue.append((d, x, v))
-                        heapq.heapify(priority_queue)
+                heapq.heapify(priority_queue)
             elif v not in visited_dict:
-                visited_dict[v] = d + visited_dict[parent]
+                visited_dict[v] = d
                 for x in range(len(self.adj_matrix[v])):
                     if self.adj_matrix[v][x] > 0:
                         d = self.adj_matrix[v][x]
-                        priority_queue.append((d, x, v))
-                        heapq.heapify(priority_queue)
+                        priority_queue.append((d + visited_dict[v], x, v))
+                heapq.heapify(priority_queue)
         for x in range (len(self.adj_matrix)):
             if x not in visited_dict:
                 visited_dict[x] = float('inf')
@@ -324,7 +324,14 @@ if __name__ == '__main__':
 
     print("\nPDF - dijkstra() example 1")
     print("--------------------------")
-    edges = [(0, 1, 10), (4, 0, 12), (1, 4, 15), (4, 3, 3),
+    edges = [(0, 2, 11), (0, 10, 1), (1, 2, 1), (1, 5, 7),
+             (1, 11, 8), (2, 0, 11), (3, 0, 17), (3, 1, 16), (3, 5, 3), (5, 1, 5), (5, 7, 13),
+             (9, 12, 17), (11, 7, 7), (12, 1, 6)]
+    g = DirectedGraph(edges)
+    print(f'DIJKSTRA {3} {g.dijkstra(3)}')
+
+
+    """edges = [(0, 1, 10), (4, 0, 12), (1, 4, 15), (4, 3, 3),
              (3, 1, 5), (2, 1, 23), (3, 2, 7)]
     g = DirectedGraph(edges)
     for i in range(5):
@@ -332,4 +339,4 @@ if __name__ == '__main__':
     g.remove_edge(4, 3)
     print('\n', g)
     for i in range(5):
-        print(f'DIJKSTRA {i} {g.dijkstra(i)}')
+        print(f'DIJKSTRA {i} {g.dijkstra(i)}')"""
