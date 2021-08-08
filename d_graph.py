@@ -215,13 +215,16 @@ class DirectedGraph:
                     stack.append(temp_list[x])
                     parent[temp_list[x]] = temp  # update parent values for the vertices we just added
                 # if reachable vertex has been reached before and it is not the parent vertex
-                if temp_list[x] in visited_vertices and temp_list[x] != parent[temp]:
-                    for i in range(len(self.adj_matrix[temp_list[x]])):
-                        if self.adj_matrix[temp_list[x]][i] > 0:  # if the reachable vertex can go somewhere else
-                            if i in visited_vertices:  # if that somewhere else has been visited before, it's a cycle
-                                for y in range(len(self.adj_matrix[i])):
-                                    if self.adj_matrix[i][y] > 0 and y in visited_vertices:
-                                        return True
+                if temp_list[x] in visited_vertices:
+                    if temp_list[x] == parent[temp] and self.adj_matrix[temp_list[x]][parent[temp_list]] > 0:
+                        return True
+                    if temp_list[x] != parent[temp]:
+                        for i in range(len(self.adj_matrix[temp_list[x]])):
+                            if self.adj_matrix[temp_list[x]][i] > 0:  # if the reachable vertex can go somewhere else
+                                if i in visited_vertices:  # if that somewhere else has been visited before
+                                    for y in range(len(self.adj_matrix[i])):  # and that somewhere else can visit a previously visited vertex
+                                        if self.adj_matrix[i][y] > 0 and y in visited_vertices:
+                                            return True
         return False  # cycle does not exist from v
 
     def dijkstra(self, src: int) -> []:
