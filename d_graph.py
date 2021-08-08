@@ -216,7 +216,7 @@ class DirectedGraph:
                     parent[temp_list[x]] = temp  # update parent values for the vertices we just added
                 # if reachable vertex has been reached before and it is not the parent vertex
                 if temp_list[x] in visited_vertices:
-                    if temp_list[x] == parent[temp] and self.adj_matrix[temp_list[x]][parent[temp_list]] > 0:
+                    if temp_list[x] == parent[temp] and self.adj_matrix[temp_list[x]][temp] > 0:
                         return True
                     if temp_list[x] != parent[temp]:
                         for i in range(len(self.adj_matrix[temp_list[x]])):
