@@ -209,18 +209,16 @@ class DirectedGraph:
             temp_list = []  # used to add vertices in reverse numerical order
             if temp not in visited_vertices:
                 visited_vertices.append(temp)
+            if self.adj_matrix[temp][v] > 0:  # if we can reach the start node on a directed graph, cycle exists
+                return True
             for x in range(len(self.adj_matrix[temp])):  # iterate through reachable vertices
                 if self.adj_matrix[temp][x] > 0:
                     temp_list.append(x)
                 temp_list.sort(reverse=True)  # creates a descending order list of reachable vertices
             for x in range(len(temp_list)):
                 if temp_list[x] not in visited_vertices and temp_list[x] not in stack:
-                    # append vertices to stack so they are visited in ascending lexicographical order
+                    # append vertices to stack so they are visited in numerical order
                     stack.append(temp_list[x])
-                    parent[temp_list[x]] = temp  # update parent values for the vertices we just added
-                # if reachable vertex has been reached before and it is not the parent vertex
-                if temp_list[x] in visited_vertices and self.adj_matrix[temp_list[x]][temp] > 0:
-                    return True
         return False  # cycle does not exist from v
 
     def dijkstra(self, src: int) -> []:
@@ -307,13 +305,17 @@ if __name__ == '__main__':
 
     print("\nPDF - method has_cycle() example 1")
     print("----------------------------------")
-    edges = [(0, 2, 6), (0, 11, 11), (1, 2, 1), (4, 12, 11),
+    """edges = [(0, 2, 6), (0, 11, 11), (1, 2, 1), (4, 12, 11),
              (5, 11, 3), (5, 12, 1), (6, 0, 17), (6, 4, 19), (6, 5, 7), (8, 6, 10),
              (9, 5, 12), (10, 12, 18), (11, 7, 9)]
     g = DirectedGraph(edges)
-    print(g.get_edges(), g.has_cycle(), sep='\n')
+    print(g.get_edges(), g.has_cycle(), sep='\n')"""
 
-    """edges_to_remove = [(3, 1), (4, 0), (3, 2)]
+    edges = [(0, 1, 10), (4, 0, 12), (1, 4, 15), (4, 3, 3),
+             (3, 1, 5), (2, 1, 23), (3, 2, 7)]
+    g = DirectedGraph(edges)
+
+    edges_to_remove = [(3, 1), (4, 0), (3, 2)]
     for src, dst in edges_to_remove:
         g.remove_edge(src, dst)
         print(g.get_edges(), g.has_cycle(), sep='\n')
@@ -322,7 +324,7 @@ if __name__ == '__main__':
     for src, dst, *weight in edges_to_add:
         g.add_edge(src, dst, *weight)
         print(g.get_edges(), g.has_cycle(), sep='\n')
-    print('\n', g)"""
+    print('\n', g)
 
 
     print("\nPDF - dijkstra() example 1")
